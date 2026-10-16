@@ -1,4 +1,5 @@
 import { Component } from "react";
+import {Form, Input, Btn } from "./ToDoEditor.styled";
 
 class ToDoEditor extends Component{
     state={
@@ -21,10 +22,10 @@ class ToDoEditor extends Component{
         const {textValue} = this.state;
         return(
             <>
-            <form onSubmit={this.handleSubmit}>
-                <input onChange={(evt)=>this.setState({textValue:evt.target.value})} type="text" value={textValue}/>
-                <button type="submit" >Create Task</button>
-            </form>
+            <Form onSubmit={this.handleSubmit}>
+                <Input placeholder="Write what you need to do" onChange={(evt)=>this.setState({textValue:evt.target.value})} type="text" value={textValue}/>
+                <Btn type="submit" >Create Task</Btn>
+            </Form>
             </>
         )
     }

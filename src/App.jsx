@@ -1,17 +1,26 @@
 import { Component } from "react";
 // import Form from "./component/Form";
 // import UserList from "./component/UserList";
-import ToDoList from "./component/ToDoList";
-import Info from "./component/Info";
-import Filter from "./component/Filter";
-import ToDoEditor from "./component/TodoEditor";
+import ToDoList from "./component/ToDoList/ToDoList";
+import Info from "./component/Info/Info";
+import Filter from "./component/Filter/Filter";
+import ToDoEditor from "./component/ToDoEditor/TodoEditor";
+
 import initialTodos from "./toDo.json"
 import { nanoid } from "nanoid";
-
+import Header from "./component/Header/Header";
+import logo from "./assets/logo.png"
 class App extends Component{
 state={
     todos: initialTodos,
     filter: '',
+  }
+
+  handleCompletedTodo=(id)=>{
+    this.setState((prev)=>({
+      todos:prev.todos.map(todo=>todo.id===id?{...todo,completed:!todo.completed}:todo)
+    }))
+    
   }
 
   handleData=(text)=>{
@@ -36,16 +45,17 @@ state={
 
   render(){
     const {todos,filter}=this.state
-    const filteredToDo = todos.filter((todo)=>todo.text.toLowerCase().includes(filter))
+    const filteredToDo = todos.filter((todo)=>todo.text.toLowerCase().includes(filter.toLowerCase()))
     
     const count = todos.length
     const completed = todos.filter((todo)=>todo.completed).length
     return(
       <>
+      <Header logo={logo}/>
       <Info quantity={count} completed={completed}/>
       <ToDoEditor onForm={this.handleData}/>
       <Filter onFilter={this.handleFilter}/>
-      <ToDoList todos={filteredToDo} del={this.handleDelete}/>
+      <ToDoList todos={filteredToDo} del={this.handleDelete} handleCompleted={this.handleCompletedTodo}/>
       </>
     )
   }
