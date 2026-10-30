@@ -15,6 +15,20 @@ state={
     todos: initialTodos,
     filter: '',
   }
+  componentDidMount(){
+    let savedToDos = window.localStorage.getItem("todos");
+    if (savedToDos) {
+      this.setState({
+        todos:JSON.parse(savedToDos),
+      })
+    }
+  }
+
+  componentDidUpdate(_,prevState){
+    if (prevState.todos.length !== this.state.todos.length) {
+      window.localStorage.setItem("todos",JSON.stringify(this.state.todos))
+    }
+  }
 
   handleCompletedTodo=(id)=>{
     this.setState((prev)=>({
@@ -46,6 +60,7 @@ state={
   render(){
     const {todos,filter}=this.state
     const filteredToDo = todos.filter((todo)=>todo.text.toLowerCase().includes(filter.toLowerCase()))
+    console.log(todos);
     
     const count = todos.length
     const completed = todos.filter((todo)=>todo.completed).length
